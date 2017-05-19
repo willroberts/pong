@@ -36,14 +36,14 @@ func (g *game) processCollision() {
 	// Detect collision with left and right, counting a score on hit.
 	if g.ball.positionX >= int32(windowWidth) {
 		log.Println("you scored!")
-		sdl.Delay(2000)
-		//paddles.reset()
+		// TODO: Increment score and render with "you scored!".
+		sdl.Delay(1500)
 		g.ball.reset()
 	}
 	if g.ball.positionX <= int32(0) {
 		log.Println("opponent scored!")
-		sdl.Delay(2000)
-		//paddles.reset()
+		// TODO: Reset score to zero and render with a losing message.
+		sdl.Delay(1500)
 		g.ball.reset()
 	}
 }

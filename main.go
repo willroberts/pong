@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -13,7 +15,10 @@ const (
 )
 
 func init() {
-	sdl.Init(sdl.INIT_EVERYTHING)
+	err := sdl.Init(sdl.INIT_EVERYTHING)
+	if err != nil {
+		log.Fatal("failed to initialize sdl")
+	}
 }
 
 func main() {
@@ -46,17 +51,25 @@ func main() {
 	// Get a pointer to the renderer.
 	renderer, err := sdl.CreateRenderer(window, -1,
 		sdl.RENDERER_SOFTWARE)
-	_ = renderer
+	if err != nil {
+		log.Println("error creating renderer")
+	}
 
 	// Main loop, including input and drawing.
 	var running = true
 	for running {
-		renderer.Clear()
+		err = renderer.Clear()
+		if err != nil {
+			log.Println("error clearing the screen")
+		}
 		err = g.mainLoop()
 		if err != nil && err.Error() == "quitting" {
 			running = false
 		}
-		window.UpdateSurface()
+		err := window.UpdateSurface()
+		if err != nil {
+			log.Println("error updating window surface")
+		}
 		sdl.Delay(frameTime)
 	}
 

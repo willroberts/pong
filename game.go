@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -20,7 +22,10 @@ func (g *game) drawPaddle(x, y int32, color uint32) {
 		W: paddleWidth,
 		H: paddleHeight,
 	}
-	g.surface.FillRect(&rect, color)
+	err := g.surface.FillRect(&rect, color)
+	if err != nil {
+		log.Println("error drawing paddle")
+	}
 }
 
 func (g *game) drawBall(x, y int32, color uint32) {
@@ -30,11 +35,14 @@ func (g *game) drawBall(x, y int32, color uint32) {
 		W: ballWidth,
 		H: ballHeight,
 	}
-	g.surface.FillRect(&rect, color)
+	err := g.surface.FillRect(&rect, color)
+	if err != nil {
+		log.Println("error drawing ball")
+	}
 }
 
 func (g *game) mainLoop() error {
-	// Collision.
+	// Collision and Scoring.
 	g.processCollision()
 
 	// Input.

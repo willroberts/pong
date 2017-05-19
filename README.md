@@ -1,6 +1,6 @@
 # Pong
 
-An implementation of the Pong game in Go.
+An implementation of 'Pong' in Go.
 
 ## To Do
 

@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -17,10 +15,6 @@ const (
 	ballStartingVelocityY int32 = 0
 )
 
-type Ball interface {
-	Rect() *sdl.Rect
-}
-
 type ball struct {
 	color uint32
 
@@ -32,26 +26,6 @@ type ball struct {
 }
 
 func (b *ball) move() {
-	// Top+Bottom Collision Detection.
-	if b.positionY <= 0 || b.positionY >= int32(windowHeight)-ballHeight {
-		b.velocityY *= -1
-	}
-
-	// Score Collision Detection.
-	if b.positionX >= int32(windowWidth) {
-		log.Println("you scored!")
-		sdl.Delay(2000)
-		//paddles.reset()
-		b.reset()
-	}
-	if b.positionX <= int32(0) {
-		log.Println("opponent scored!")
-		sdl.Delay(2000)
-		//paddles.reset()
-		b.reset()
-	}
-
-	// Other movement.A
 	b.positionX += b.velocityX
 	b.positionY += b.velocityY
 }

@@ -18,7 +18,7 @@ func init() {
 
 func main() {
 	// Create the game instance.
-	g := &Game{}
+	g := &game{}
 
 	// Create the game window.
 	window, err := sdl.CreateWindow(windowTitle, sdl.WINDOWPOS_UNDEFINED,
@@ -36,9 +36,9 @@ func main() {
 	g.surface = surface
 
 	// Initialize paddles and ball.
-	g.paddles = []*Paddle{
-		&Paddle{colorGreen, playerStartingX, playerStartingY, false, false},
-		&Paddle{colorRed, opponentStartingX, opponentStartingY, false, false},
+	g.paddles = []*paddle{
+		&paddle{colorGreen, playerStartingX, playerStartingY, false, false},
+		&paddle{colorRed, opponentStartingX, opponentStartingY, false, false},
 	}
 	g.ball = &ball{colorWhite, ballStartingX, ballStartingY,
 		ballStartingVelocityX, ballStartingVelocityY}
@@ -48,7 +48,7 @@ func main() {
 		sdl.RENDERER_SOFTWARE)
 
 	// Main loop, including input and drawing.
-	var running bool = true
+	var running = true
 	for running {
 		renderer.Clear()
 		g.mainLoop()

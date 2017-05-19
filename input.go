@@ -9,7 +9,7 @@ const (
 	arrowUp   sdl.Keycode = 1073741906
 )
 
-func (g *Game) processInput() error {
+func (g *game) processInput() error {
 	for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 		switch t := event.(type) {
 		case *sdl.QuitEvent:

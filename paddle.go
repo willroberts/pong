@@ -2,18 +2,18 @@ package main
 
 import "github.com/veandco/go-sdl2/sdl"
 
-// TODO:
-// 	Instead of drawing in weird places, have all objects have a Rect()
-//  function which returns its *sdl.Rect for drawing and collision.
-//  Use interfaces, too.
-
 const (
 	paddleWidth    int32 = 25
 	paddleHeight   int32 = 150
 	paddleVelocity int32 = 4 // Pixels per frame.
+
+	playerStartingX   int32 = 50
+	playerStartingY   int32 = 235
+	opponentStartingX int32 = 725
+	opponentStartingY int32 = 235
 )
 
-type Paddle struct {
+type paddle struct {
 	color uint32
 
 	positionX int32
@@ -23,7 +23,7 @@ type Paddle struct {
 	movingDown bool
 }
 
-func (p *Paddle) move() {
+func (p *paddle) move() {
 	if p.movingUp && p.positionY > 0 {
 		p.positionY -= paddleVelocity
 	}
@@ -32,6 +32,6 @@ func (p *Paddle) move() {
 	}
 }
 
-func (p *Paddle) Rect() *sdl.Rect {
+func (p *paddle) Rect() *sdl.Rect {
 	return &sdl.Rect{p.positionX, p.positionY, paddleWidth, paddleHeight}
 }

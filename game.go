@@ -6,33 +6,26 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-const (
-	playerStartingX   int32 = 50
-	playerStartingY   int32 = 235
-	opponentStartingX int32 = 725
-	opponentStartingY int32 = 235
-)
-
-type Game struct {
+type game struct {
 	surface *sdl.Surface
-	paddles []*Paddle
+	paddles []*paddle
 	ball    *ball
 
 	playerScore   uint
 	opponentScore uint
 }
 
-func (g *Game) drawPaddle(x, y int32, color uint32) {
+func (g *game) drawPaddle(x, y int32, color uint32) {
 	rect := sdl.Rect{x, y, paddleWidth, paddleHeight}
 	g.surface.FillRect(&rect, color)
 }
 
-func (g *Game) drawBall(x, y int32, color uint32) {
+func (g *game) drawBall(x, y int32, color uint32) {
 	rect := sdl.Rect{x, y, ballWidth, ballHeight}
 	g.surface.FillRect(&rect, color)
 }
 
-func (g *Game) mainLoop() {
+func (g *game) mainLoop() {
 	b := g.ball
 	g.processCollision()
 	b.move()
@@ -46,21 +39,5 @@ func (g *Game) mainLoop() {
 	for _, p := range g.paddles {
 		p.move()
 		g.drawPaddle(p.positionX, p.positionY, p.color)
-	}
-}
-
-func (g *Game) processCollision() {
-	ballRect := g.ball.Rect()
-	if ballRect == nil {
-		log.Fatal("error: ball rect is nil")
-	}
-	for _, p := range g.paddles {
-		paddleRect := p.Rect()
-		if paddleRect == nil {
-			log.Fatal("error: paddle rect is nil")
-		}
-		if ballRect.HasIntersection(paddleRect) {
-			g.ball.velocityX *= -1
-		}
 	}
 }

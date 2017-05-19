@@ -15,9 +15,15 @@ func (g *game) processCollision() {
 			g.ball.velocityX *= -1
 			if p.movingUp {
 				g.ball.velocityY -= paddleVelocity
+				if g.ball.velocityY < -6 {
+					g.ball.velocityY = -6
+				}
 			}
 			if p.movingDown {
 				g.ball.velocityY += paddleVelocity
+				if g.ball.velocityY > 6 {
+					g.ball.velocityY = 6
+				}
 			}
 		}
 	}

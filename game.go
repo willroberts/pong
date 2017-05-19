@@ -36,18 +36,26 @@ func (g *game) drawBall(x, y int32, color uint32) {
 }
 
 func (g *game) mainLoop() {
-	b := g.ball
+	// Collision.
 	g.processCollision()
-	b.move()
-	g.drawBall(b.positionX, b.positionY, b.color)
 
+	// Input.
 	err := g.processInput()
 	if err != nil {
 		log.Println("error: ", err)
 		sdl.Quit()
 	}
+
+	// Movement.
+	g.ball.move()
+	g.processAI()
 	for _, p := range g.paddles {
 		p.move()
+	}
+
+	// Drawing.
+	g.drawBall(g.ball.positionX, g.ball.positionY, g.ball.color)
+	for _, p := range g.paddles {
 		g.drawPaddle(p.positionX, p.positionY, p.color)
 	}
 }

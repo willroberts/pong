@@ -16,12 +16,22 @@ type game struct {
 }
 
 func (g *game) drawPaddle(x, y int32, color uint32) {
-	rect := sdl.Rect{x, y, paddleWidth, paddleHeight}
+	rect := sdl.Rect{
+		X: x,
+		Y: y,
+		W: paddleWidth,
+		H: paddleHeight,
+	}
 	g.surface.FillRect(&rect, color)
 }
 
 func (g *game) drawBall(x, y int32, color uint32) {
-	rect := sdl.Rect{x, y, ballWidth, ballHeight}
+	rect := sdl.Rect{
+		X: x,
+		Y: y,
+		W: ballWidth,
+		H: ballHeight,
+	}
 	g.surface.FillRect(&rect, color)
 }
 

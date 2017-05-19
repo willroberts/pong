@@ -38,5 +38,10 @@ func (b *ball) reset() {
 }
 
 func (b *ball) Rect() *sdl.Rect {
-	return &sdl.Rect{b.positionX, b.positionY, ballWidth, ballHeight}
+	return &sdl.Rect{
+		X: b.positionX,
+		Y: b.positionY,
+		W: ballWidth,
+		H: ballHeight,
+	}
 }

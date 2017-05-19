@@ -33,5 +33,9 @@ func (p *paddle) move() {
 }
 
 func (p *paddle) Rect() *sdl.Rect {
-	return &sdl.Rect{p.positionX, p.positionY, paddleWidth, paddleHeight}
+	return &sdl.Rect{
+		X: p.positionX,
+		Y: p.positionY,
+		W: paddleWidth,
+		H: paddleHeight}
 }

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -13,7 +15,7 @@ func (g *game) processInput() error {
 	for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 		switch t := event.(type) {
 		case *sdl.QuitEvent:
-			sdl.Quit()
+			return errors.New("quitting")
 		case *sdl.KeyDownEvent:
 			if t.Keysym.Sym != arrowUp && t.Keysym.Sym != arrowDown {
 				continue

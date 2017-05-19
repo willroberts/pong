@@ -43,15 +43,19 @@ func main() {
 	g.ball = &ball{colorWhite, ballStartingX, ballStartingY,
 		ballStartingVelocityX, ballStartingVelocityY}
 
-	// Get a handle to the renderer.
+	// Get a pointer to the renderer.
 	renderer, err := sdl.CreateRenderer(window, -1,
 		sdl.RENDERER_SOFTWARE)
+	_ = renderer
 
 	// Main loop, including input and drawing.
 	var running = true
 	for running {
 		renderer.Clear()
-		g.mainLoop()
+		err = g.mainLoop()
+		if err != nil && err.Error() == "quitting" {
+			running = false
+		}
 		window.UpdateSurface()
 		sdl.Delay(frameTime)
 	}

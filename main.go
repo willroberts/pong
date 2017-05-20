@@ -1,5 +1,8 @@
 package main
 
+// FIXME: Only window-related stuff should appear here. Move everything else to
+// a g.Setup() function.
+
 import (
 	"log"
 

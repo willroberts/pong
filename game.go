@@ -11,6 +11,7 @@ type game struct {
 	paddles []Rect
 	ball    Rect
 	score   uint
+	pause   bool
 }
 
 func (g *game) drawRect(r Rect) error {
@@ -27,10 +28,16 @@ func (g *game) Reset() {
 		p.ResetPosition()
 	}
 	g.ball.SetXVelocity(ballVelocity)
-	sdl.Delay(1000)
 }
 
 func (g *game) mainLoop() error {
+	// Pause for one second if we just scored.
+	if g.pause {
+		sdl.Delay(1000)
+		g.Reset()
+		g.pause = false
+	}
+
 	// Input.
 	err := g.processInput()
 	if err != nil {

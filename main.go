@@ -44,12 +44,26 @@ func main() {
 	g.surface = surface
 
 	// Initialize paddles and ball.
-	g.paddles = []*paddle{
-		&paddle{colorGreen, playerStartingX, playerStartingY, false, false},
-		&paddle{colorRed, opponentStartingX, opponentStartingY, false, false},
+	playerParams := rectParams{
+		color:     colorGreen,
+		width:     paddleWidth,
+		height:    paddleHeight,
+		startingX: 50,
+		startingY: 230,
 	}
-	g.ball = &ball{colorWhite, ballStartingX, ballStartingY,
-		ballStartingVelocityX, ballStartingVelocityY}
+	opponentParams := rectParams{
+		color:     colorRed,
+		width:     paddleWidth,
+		height:    paddleHeight,
+		startingX: 725,
+		startingY: 230,
+	}
+	_ = opponentParams
+	g.paddles = []Rect{
+		NewRect(playerParams),
+		NewRect(opponentParams),
+	}
+	g.ball = createBall()
 
 	// Get a pointer to the renderer.
 	renderer, err := sdl.CreateRenderer(window, -1,

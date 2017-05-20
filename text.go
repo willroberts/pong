@@ -32,7 +32,8 @@ func init() {
 
 // 340,0,0,0 and PONG
 func (g *game) createLabel(position *sdl.Rect, text string) error {
-	label, err := font.RenderUTF8_Solid(text, sdl.Color{255, 255, 255, 255})
+	label, err := font.RenderUTF8_Solid(text,
+		sdl.Color{R: 255, G: 255, B: 255, A: 255})
 	if err != nil {
 		return err
 	}

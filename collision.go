@@ -1,44 +1,41 @@
 package main
 
-import (
-	"github.com/veandco/go-sdl2/sdl"
-)
-
-// TODO: Move all collision logic here.
 func (g *game) processCollision() {
-	// Detect collision with paddles, and reverse horizontal course on hit.
+	g.handleWalls()
+	g.handleBounces()
+}
+
+// handleBounces reverses the ball direction on paddle collision.
+func (g *game) handleBounces() {
 	for _, p := range g.paddles {
-		paddleRect := p.Rect()
-		if g.ball.Rect().HasIntersection(paddleRect) {
-			g.ball.velocityX *= -1
-			if p.movingUp {
-				g.ball.velocityY -= paddleVelocity
-				if g.ball.velocityY < -6 {
-					g.ball.velocityY = -6
-				}
-			}
-			if p.movingDown {
-				g.ball.velocityY += paddleVelocity
-				if g.ball.velocityY > 6 {
-					g.ball.velocityY = 6
-				}
-			}
+		if p.Rect().HasIntersection(g.ball.Rect()) {
+			g.ball.SetXVelocity(g.ball.GetXVelocity() * -1)
+			g.ball.SetYVelocity(p.GetYVelocity()) // Apply "spin".
 		}
 	}
+}
 
-	// Detect collision with top and bottom, reversing vertical course on hit.
-	if g.ball.positionY <= 0 || g.ball.positionY >= int32(windowHeight)-ballHeight {
-		g.ball.velocityY *= -1
+// handleWalls handles collision of the paddles and ball with window edges.
+func (g *game) handleWalls() {
+	// Prevent the ball from leaving the game window.
+	if g.ball.Y() <= 0 || g.ball.Y() >= int32(windowHeight)-ballHeight {
+		g.ball.SetYVelocity(g.ball.GetYVelocity() * -1)
+	}
+	if g.ball.X() >= int32(windowWidth)-ballWidth {
+		g.score++
+		g.Reset()
+	}
+	if g.ball.X() <= ballWidth {
+		g.Reset()
 	}
 
-	// Detect collision with left and right, counting a score on hit.
-	if g.ball.positionX >= int32(windowWidth) {
-		g.score += 1
-		sdl.Delay(1000)
-		g.ball.reset()
-	}
-	if g.ball.positionX <= int32(0) {
-		sdl.Delay(1000)
-		g.ball.reset()
+	// Prevent paddles from leaving the game window.
+	for _, p := range g.paddles {
+		if p.Y() <= 0 && p.GetYVelocity() < 0 {
+			p.SetYVelocity(0)
+		}
+		if p.Y() >= int32(windowHeight)-paddleHeight && p.GetYVelocity() > 0 {
+			p.SetYVelocity(0)
+		}
 	}
 }

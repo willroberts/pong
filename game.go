@@ -2,75 +2,66 @@ package main
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
 
 type game struct {
 	surface *sdl.Surface
-	paddles []*paddle
-	ball    *ball
+	paddles []Rect
+	ball    Rect
 	score   uint
 }
 
-func (g *game) drawPaddle(x, y int32, color uint32) {
-	rect := sdl.Rect{
-		X: x,
-		Y: y,
-		W: paddleWidth,
-		H: paddleHeight,
-	}
-	err := g.surface.FillRect(&rect, color)
+func (g *game) drawRect(r Rect) error {
+	err := g.surface.FillRect(r.Rect(), r.Color())
 	if err != nil {
-		log.Println("error drawing paddle")
+		return err
 	}
+	return nil
 }
 
-func (g *game) drawBall(x, y int32, color uint32) {
-	rect := sdl.Rect{
-		X: x,
-		Y: y,
-		W: ballWidth,
-		H: ballHeight,
+func (g *game) Reset() {
+	g.ball.ResetPosition()
+	for _, p := range g.paddles {
+		p.ResetPosition()
 	}
-	err := g.surface.FillRect(&rect, color)
-	if err != nil {
-		log.Println("error drawing ball")
-	}
+	g.ball.SetXVelocity(ballVelocity)
+	sdl.Delay(1000)
 }
 
 func (g *game) mainLoop() error {
-	// Collision and Scoring.
-	g.processCollision()
-
 	// Input.
 	err := g.processInput()
 	if err != nil {
 		return err
 	}
+	g.processAI()
+
+	// Collision and Scoring.
+	g.processCollision()
 
 	// Movement.
-	g.ball.move()
-	g.processAI()
+	g.ball.Move()
 	for _, p := range g.paddles {
-		p.move()
+		p.Move()
 	}
 
 	// Drawing.
-	err = g.createLabel(&sdl.Rect{690, 0, 0, 0}, "PONG")
+	err = g.createLabel(&sdl.Rect{X: 690, Y: 0, W: 0, H: 0}, "PONG")
 	if err != nil {
 		return err
 	}
 
-	err = g.createLabel(&sdl.Rect{0, 0, 0, 0}, fmt.Sprintf("SCORE: %d", g.score))
+	err = g.createLabel(&sdl.Rect{X: 0, Y: 0, W: 0, H: 0},
+		fmt.Sprintf("SCORE: %d", g.score))
 	if err != nil {
 		return err
 	}
 
-	g.drawBall(g.ball.positionX, g.ball.positionY, g.ball.color)
+	g.drawRect(g.ball)
 	for _, p := range g.paddles {
-		g.drawPaddle(p.positionX, p.positionY, p.color)
+		g.drawRect(p)
 	}
 
 	return nil

@@ -8,15 +8,11 @@ func (g *game) processAI() {
 	ball := g.ball
 	opponent := g.paddles[1]
 
-	if opponent.positionY >= ball.positionY+int32(ballHeight) {
-		opponent.movingUp = true
+	if opponent.Y() >= ball.Y()+int32(ballHeight) {
+		opponent.SetYVelocity(-paddleVelocity)
+	} else if opponent.Y()+int32(paddleHeight) < ball.Y() {
+		opponent.SetYVelocity(paddleVelocity)
 	} else {
-		opponent.movingUp = false
-	}
-
-	if opponent.positionY+int32(paddleHeight) < ball.positionY {
-		opponent.movingDown = true
-	} else {
-		opponent.movingDown = false
+		opponent.SetYVelocity(0)
 	}
 }

@@ -12,6 +12,7 @@ const (
 )
 
 func (g *game) processInput() error {
+	player := g.paddles[0]
 	for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 		switch t := event.(type) {
 		case *sdl.QuitEvent:
@@ -21,20 +22,20 @@ func (g *game) processInput() error {
 				continue
 			}
 			if t.Keysym.Sym == arrowUp {
-				g.paddles[0].movingUp = true
+				player.SetYVelocity(-paddleVelocity)
 			}
 			if t.Keysym.Sym == arrowDown {
-				g.paddles[0].movingDown = true
+				player.SetYVelocity(paddleVelocity)
 			}
 		case *sdl.KeyUpEvent:
 			if t.Keysym.Sym != arrowUp && t.Keysym.Sym != arrowDown {
 				continue
 			}
 			if t.Keysym.Sym == arrowUp {
-				g.paddles[0].movingUp = false
+				player.SetYVelocity(0)
 			}
 			if t.Keysym.Sym == arrowDown {
-				g.paddles[0].movingDown = false
+				player.SetYVelocity(0)
 			}
 		}
 	}

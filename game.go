@@ -66,9 +66,13 @@ func (g *game) mainLoop() error {
 		return err
 	}
 
-	g.drawRect(g.ball)
+	if err = g.drawRect(g.ball); err != nil {
+		return err
+	}
 	for _, p := range g.paddles {
-		g.drawRect(p)
+		if err = g.drawRect(p); err != nil {
+			return err
+		}
 	}
 
 	return nil

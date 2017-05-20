@@ -13,6 +13,7 @@ const (
 
 func (g *game) processInput() error {
 	player := g.paddles[0]
+
 	for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 		switch t := event.(type) {
 		case *sdl.QuitEvent:
@@ -39,5 +40,6 @@ func (g *game) processInput() error {
 			}
 		}
 	}
+
 	return nil
 }

@@ -34,6 +34,7 @@ type rect struct {
 	height    int32
 	startingX int32
 	startingY int32
+
 	positionX int32
 	positionY int32
 	velocityX int32
@@ -84,6 +85,7 @@ func (r *rect) Rect() *sdl.Rect {
 	return &sdl.Rect{X: r.positionX, Y: r.positionY, W: r.width, H: r.height}
 }
 
+// NewRect creates a new Rect with the given parameters.
 func NewRect(p rectParams) Rect {
 	return &rect{
 		color:     p.color,

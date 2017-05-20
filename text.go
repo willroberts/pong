@@ -18,15 +18,12 @@ var (
 
 func init() {
 	var err error
-	if font == nil {
-		if err := ttf.Init(); err != nil {
-			log.Fatal(err)
-		}
-
-		font, err = ttf.OpenFont(fontPath, fontSize)
-		if err != nil {
-			log.Fatal(err)
-		}
+	if err := ttf.Init(); err != nil {
+		log.Fatal(err)
+	}
+	font, err = ttf.OpenFont(fontPath, fontSize)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 
@@ -38,7 +35,7 @@ func (g *game) createLabel(position *sdl.Rect, text string) error {
 	}
 	defer label.Free()
 
-	label.Blit(nil, g.surface, position)
+	err = label.Blit(nil, g.surface, position)
 	if err != nil {
 		return err
 	}

@@ -25,6 +25,9 @@ func main() {
 	// Create the game instance.
 	g := &game{}
 
+	// Remember to tear down font resources.
+	defer font.Close()
+
 	// Create the game window.
 	window, err := sdl.CreateWindow(windowTitle, sdl.WINDOWPOS_UNDEFINED,
 		sdl.WINDOWPOS_UNDEFINED, windowWidth, windowHeight, sdl.WINDOW_SHOWN)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -10,9 +11,7 @@ type game struct {
 	surface *sdl.Surface
 	paddles []*paddle
 	ball    *ball
-
-	playerScore   uint
-	opponentScore uint
+	score   uint
 }
 
 func (g *game) drawPaddle(x, y int32, color uint32) {
@@ -59,6 +58,16 @@ func (g *game) mainLoop() error {
 	}
 
 	// Drawing.
+	err = g.createLabel(&sdl.Rect{690, 0, 0, 0}, "PONG")
+	if err != nil {
+		return err
+	}
+
+	err = g.createLabel(&sdl.Rect{0, 0, 0, 0}, fmt.Sprintf("SCORE: %d", g.score))
+	if err != nil {
+		return err
+	}
+
 	g.drawBall(g.ball.positionX, g.ball.positionY, g.ball.color)
 	for _, p := range g.paddles {
 		g.drawPaddle(p.positionX, p.positionY, p.color)

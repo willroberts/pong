@@ -10,7 +10,7 @@ type game struct {
 	surface *sdl.Surface
 	paddles []Rect
 	ball    Rect
-	score   uint
+	score   int
 	pause   bool
 }
 

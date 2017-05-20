@@ -1,6 +1,6 @@
 # Pong
 
-An implementation of 'Pong' in Go.
+An implementation of 'Pong' in Go, using SDL2.
 
 ## To Do
 

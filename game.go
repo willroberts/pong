@@ -79,7 +79,6 @@ func (g *GameEngine) Loop() error {
 		g.pause = false
 	}
 
-	// Process player input.
 	err := g.processInput()
 	if err != nil {
 		return err
@@ -118,6 +117,7 @@ func (g *GameEngine) Loop() error {
 	return nil
 }
 
+// drawRect is a helper function for drawing any *sdl.Rect on the game window.
 func (g *GameEngine) drawRect(r Rect) error {
 	err := g.surface.FillRect(r.Rect(), r.Color())
 	if err != nil {

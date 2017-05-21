@@ -2,7 +2,8 @@ package main
 
 import "github.com/veandco/go-sdl2/sdl"
 
-// Rect is the common interface used by the ball and paddles.
+// Rect is the common interface used by the ball and paddles. It is based on
+// *sdl.Rect, with additional fields related to game logic.
 type Rect interface {
 	Color() uint32
 	X() int32

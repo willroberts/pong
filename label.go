@@ -4,6 +4,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
+// createLabel draws text on the game window.
 func (g *GameEngine) createLabel(position *sdl.Rect, text string) error {
 	label, err := g.font.RenderUTF8_Solid(text,
 		sdl.Color{R: 255, G: 255, B: 255, A: 255})

@@ -11,6 +11,10 @@ const (
 	arrowUp   sdl.Keycode = 1073741906
 )
 
+// processInput checks for keypresses and key releases. When the up or down
+// arrow keys are pressed, move the player's paddle in that direction. When
+// they are released, stop movement. Also processes the quit event when the
+// user clicks the window's close button.
 func (g *GameEngine) processInput() error {
 	player := g.paddles[0]
 

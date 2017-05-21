@@ -20,7 +20,7 @@ func determineSpin(y1, y2 int32) int32 {
 }
 
 // handleBounces reverses the ball direction on paddle collision.
-func (g *game) handleBounces() {
+func (g *GameEngine) handleBounces() {
 	player := g.paddles[0]
 	opponent := g.paddles[1]
 
@@ -37,7 +37,7 @@ func (g *game) handleBounces() {
 
 // handleWalls handles collision of the paddles and ball with window edges. On
 // contact with left or right walls, modifies score and signals for pause time.
-func (g *game) handleWalls() {
+func (g *GameEngine) handleWalls() {
 	// Prevent the ball from leaving the game window.
 	if g.ball.Y() <= 0 || g.ball.Y() >= int32(windowHeight)-ballHeight {
 		g.ball.SetYVelocity(g.ball.GetYVelocity() * -1)

@@ -16,7 +16,7 @@ const (
 func init() {
 	err := sdl.Init(sdl.INIT_EVERYTHING)
 	if err != nil {
-		log.Fatal("failed to initialize sdl")
+		log.Fatal("failed to initialize sdl: ", err)
 	}
 }
 
@@ -25,25 +25,25 @@ func main() {
 	window, err := sdl.CreateWindow(windowTitle, sdl.WINDOWPOS_UNDEFINED,
 		sdl.WINDOWPOS_UNDEFINED, windowWidth, windowHeight, sdl.WINDOW_SHOWN)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("failed to initialize window: ", err)
 	}
 	defer window.Destroy()
 	surface, err := window.GetSurface()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("failed to initialize surface: ", err)
 	}
 
 	// Get a pointer to the renderer for screen clearing.
 	renderer, err := sdl.CreateRenderer(window, -1,
 		sdl.RENDERER_SOFTWARE)
 	if err != nil {
-		log.Println("error creating renderer")
+		log.Fatal("failed to initialize renderer: ", err)
 	}
 
 	// Initialize the game engine.
-	g, err := GameSetup()
+	g, err := Setup()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("failed to initialize game engine: ", err)
 	}
 	g.surface = surface
 	defer g.font.Close()
@@ -53,7 +53,7 @@ func main() {
 	for running {
 		err = renderer.Clear()
 		if err != nil {
-			log.Println("error clearing the screen")
+			log.Println("failed to clear the screen: ", err)
 		}
 
 		err = g.Loop()
@@ -63,7 +63,7 @@ func main() {
 
 		err := window.UpdateSurface()
 		if err != nil {
-			log.Println("error updating window surface")
+			log.Println("failed to update window surface: ", err)
 		}
 
 		sdl.Delay(frameTime)

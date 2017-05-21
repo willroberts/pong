@@ -11,7 +11,7 @@ const (
 	arrowUp   sdl.Keycode = 1073741906
 )
 
-func (g *game) processInput() error {
+func (g *GameEngine) processInput() error {
 	player := g.paddles[0]
 
 	for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {

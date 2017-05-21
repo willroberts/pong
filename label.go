@@ -4,7 +4,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-func (g *game) createLabel(position *sdl.Rect, text string) error {
+func (g *GameEngine) createLabel(position *sdl.Rect, text string) error {
 	label, err := g.font.RenderUTF8_Solid(text,
 		sdl.Color{R: 255, G: 255, B: 255, A: 255})
 	if err != nil {

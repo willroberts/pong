@@ -7,7 +7,8 @@ import (
 	ttf "github.com/veandco/go-sdl2/sdl_ttf"
 )
 
-type game struct {
+// GameEngine stores our global variables and shared components.
+type GameEngine struct {
 	font    *ttf.Font
 	surface *sdl.Surface
 	paddles []Rect
@@ -16,16 +17,18 @@ type game struct {
 	pause   bool
 }
 
-func GameSetup() (*game, error) {
-	g := &game{}
+// Setup configures our game engine and populates it with the necessary
+// components.
+func Setup() (*GameEngine, error) {
+	g := &GameEngine{}
 
 	err := ttf.Init()
 	if err != nil {
-		return &game{}, err
+		return &GameEngine{}, err
 	}
 	font, err := ttf.OpenFont("font/SFPixelate-Bold.ttf", 40)
 	if err != nil {
-		return &game{}, err
+		return &GameEngine{}, err
 	}
 	g.font = font
 
@@ -58,7 +61,8 @@ func GameSetup() (*game, error) {
 	return g, nil
 }
 
-func (g *game) Reset() {
+// Reset brings components back to their initial states.
+func (g *GameEngine) Reset() {
 	g.ball.ResetPosition()
 	for _, p := range g.paddles {
 		p.ResetPosition()
@@ -66,7 +70,8 @@ func (g *game) Reset() {
 	g.ball.SetXVelocity(ballVelocity)
 }
 
-func (g *game) Loop() error {
+// Loop contains the core game logic which runs once per frame.
+func (g *GameEngine) Loop() error {
 	// Pause for one second if we just scored.
 	if g.pause {
 		sdl.Delay(1000)
@@ -113,7 +118,7 @@ func (g *game) Loop() error {
 	return nil
 }
 
-func (g *game) drawRect(r Rect) error {
+func (g *GameEngine) drawRect(r Rect) error {
 	err := g.surface.FillRect(r.Rect(), r.Color())
 	if err != nil {
 		return err

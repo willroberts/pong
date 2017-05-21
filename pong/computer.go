@@ -1,4 +1,4 @@
-package main
+package pong
 
 // processAI moves the computer-controlled opponent in response to the ball's
 // vertical position.

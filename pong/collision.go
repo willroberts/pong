@@ -1,4 +1,4 @@
-package main
+package pong
 
 // determineSpin provides a new Y velocity for y2 given its relative position
 // to y1. Contact with the top of a paddle sends the ball up, and contact with
@@ -39,7 +39,7 @@ func (g *GameEngine) handleBounces() {
 // contact with left or right walls, modifies score and signals for pause time.
 func (g *GameEngine) handleWalls() {
 	// Prevent the ball from leaving the game window.
-	if g.ball.Y() <= 0 || g.ball.Y() >= int32(windowHeight)-ballHeight {
+	if g.ball.Y() <= 0 || g.ball.Y() >= int32(g.Height)-ballHeight {
 		g.ball.SetYVelocity(g.ball.GetYVelocity() * -1)
 	}
 
@@ -48,13 +48,13 @@ func (g *GameEngine) handleWalls() {
 		if p.Y() <= 0 && p.GetYVelocity() < 0 {
 			p.SetYVelocity(0)
 		}
-		if p.Y() >= int32(windowHeight)-paddleHeight && p.GetYVelocity() > 0 {
+		if p.Y() >= int32(g.Height)-paddleHeight && p.GetYVelocity() > 0 {
 			p.SetYVelocity(0)
 		}
 	}
 
 	// Detect scores by the player or the opponent.
-	if g.ball.X() >= int32(windowWidth)-ballWidth {
+	if g.ball.X() >= int32(g.Width)-ballWidth {
 		g.score++
 		g.pause = true
 	}

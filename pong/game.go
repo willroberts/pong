@@ -1,4 +1,4 @@
-package main
+package pong
 
 import (
 	"fmt"
@@ -9,8 +9,11 @@ import (
 
 // GameEngine stores our global variables and shared components.
 type GameEngine struct {
-	font    *ttf.Font
-	surface *sdl.Surface
+	Width   int
+	Height  int
+	Font    *ttf.Font
+	Surface *sdl.Surface
+
 	paddles []Rect
 	ball    Rect
 	score   int
@@ -19,8 +22,11 @@ type GameEngine struct {
 
 // Setup configures our game engine and populates it with the necessary
 // components.
-func Setup() (*GameEngine, error) {
-	g := &GameEngine{}
+func Setup(width, height int) (*GameEngine, error) {
+	g := &GameEngine{
+		Width:  width,
+		Height: height,
+	}
 
 	err := ttf.Init()
 	if err != nil {
@@ -30,7 +36,7 @@ func Setup() (*GameEngine, error) {
 	if err != nil {
 		return &GameEngine{}, err
 	}
-	g.font = font
+	g.Font = font
 
 	g.paddles = []Rect{
 		NewRect(rectParams{
@@ -119,7 +125,7 @@ func (g *GameEngine) Loop() error {
 
 // drawRect is a helper function for drawing any *sdl.Rect on the game window.
 func (g *GameEngine) drawRect(r Rect) error {
-	err := g.surface.FillRect(r.Rect(), r.Color())
+	err := g.Surface.FillRect(r.Rect(), r.Color())
 	if err != nil {
 		return err
 	}

@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/veandco/go-sdl2/sdl"
+	"github.com/willroberts/pong/pong"
 )
 
 const (
@@ -41,12 +42,12 @@ func main() {
 	}
 
 	// Initialize the game engine.
-	g, err := Setup()
+	g, err := pong.Setup(windowWidth, windowHeight)
 	if err != nil {
 		log.Fatal("failed to initialize game engine: ", err)
 	}
-	g.surface = surface
-	defer g.font.Close()
+	g.Surface = surface
+	defer g.Font.Close()
 
 	// Run the game's main loop until we close the window.
 	var running = true

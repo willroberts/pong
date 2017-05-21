@@ -1,34 +1,11 @@
 package main
 
 import (
-	"log"
-
 	"github.com/veandco/go-sdl2/sdl"
-	ttf "github.com/veandco/go-sdl2/sdl_ttf"
 )
-
-const (
-	fontPath string = "font/SFPixelate-Bold.ttf"
-	fontSize int    = 40
-)
-
-var (
-	font *ttf.Font
-)
-
-func init() {
-	var err error
-	if err := ttf.Init(); err != nil {
-		log.Fatal(err)
-	}
-	font, err = ttf.OpenFont(fontPath, fontSize)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
 
 func (g *game) createLabel(position *sdl.Rect, text string) error {
-	label, err := font.RenderUTF8_Solid(text,
+	label, err := g.font.RenderUTF8_Solid(text,
 		sdl.Color{R: 255, G: 255, B: 255, A: 255})
 	if err != nil {
 		return err

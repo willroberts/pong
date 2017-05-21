@@ -1,8 +1,5 @@
 package main
 
-// FIXME: Only window-related stuff should appear here. Move everything else to
-// a g.Setup() function.
-
 import (
 	"log"
 
@@ -13,8 +10,7 @@ const (
 	windowTitle  string = "Pong"
 	windowWidth  int    = 800
 	windowHeight int    = 600
-
-	frameTime uint32 = 16 // 62.5 FPS.
+	frameTime    uint32 = 16 // 62.5 FPS.
 )
 
 func init() {
@@ -25,80 +21,51 @@ func init() {
 }
 
 func main() {
-	// Create the game instance.
-	g := &game{}
-
-	// Remember to tear down font resources.
-	defer font.Close()
-
-	// Create the game window.
+	// Create the game window and drawable surface.
 	window, err := sdl.CreateWindow(windowTitle, sdl.WINDOWPOS_UNDEFINED,
 		sdl.WINDOWPOS_UNDEFINED, windowWidth, windowHeight, sdl.WINDOW_SHOWN)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	defer window.Destroy()
-
-	// Get a pointer to the surface.
 	surface, err := window.GetSurface()
 	if err != nil {
-		panic(err)
-	}
-	g.surface = surface
-
-	// Initialize paddles.
-	playerParams := rectParams{
-		color:     colorGreen,
-		width:     paddleWidth,
-		height:    paddleHeight,
-		startingX: 50,
-		startingY: 230,
-	}
-	opponentParams := rectParams{
-		color:     colorRed,
-		width:     paddleWidth,
-		height:    paddleHeight,
-		startingX: 725,
-		startingY: 230,
-	}
-	g.paddles = []Rect{
-		NewRect(playerParams),
-		NewRect(opponentParams),
+		log.Fatal(err)
 	}
 
-	// Initialize ball.
-	ballParams := rectParams{
-		color:     colorWhite,
-		width:     ballWidth,
-		height:    ballHeight,
-		startingX: 390,
-		startingY: 290,
-	}
-	g.ball = NewRect(ballParams)
-	g.ball.SetXVelocity(ballVelocity)
-
-	// Get a pointer to the renderer.
+	// Get a pointer to the renderer for screen clearing.
 	renderer, err := sdl.CreateRenderer(window, -1,
 		sdl.RENDERER_SOFTWARE)
 	if err != nil {
 		log.Println("error creating renderer")
 	}
 
-	// Main loop, including input and drawing.
+	// Initialize the game engine.
+	g, err := GameSetup()
+	if err != nil {
+		log.Fatal(err)
+	}
+	g.surface = surface
+	defer g.font.Close()
+
+	// Run the game's main loop until we close the window.
 	var running = true
 	for running {
 		err = renderer.Clear()
 		if err != nil {
 			log.Println("error clearing the screen")
 		}
-		err = g.mainLoop()
+
+		err = g.Loop()
 		if err != nil && err.Error() == "quitting" {
 			running = false
 		}
+
 		err := window.UpdateSurface()
 		if err != nil {
 			log.Println("error updating window surface")
 		}
+
 		sdl.Delay(frameTime)
 	}
 

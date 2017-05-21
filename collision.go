@@ -1,12 +1,9 @@
 package main
 
-func (g *game) processCollision() {
-	g.handleWalls()
-	g.handleBounces()
-}
-
 // determineSpin provides a new Y velocity for y2 given its relative position
-// to y1.
+// to y1. Contact with the top of a paddle sends the ball up, and contact with
+// the bottom of a paddle sends the ball down. Contact with outer edges results
+// in the highest "spin" values.
 func determineSpin(y1, y2 int32) int32 {
 	diff := y2 - y1
 	if diff > 100 {
@@ -29,30 +26,21 @@ func (g *game) handleBounces() {
 
 	if g.ball.Rect().HasIntersection(player.Rect()) {
 		g.ball.SetXVelocity(ballVelocity)
-		spin := determineSpin(player.Y(), g.ball.Y())
-		g.ball.SetYVelocity(spin)
+		g.ball.SetYVelocity(determineSpin(player.Y(), g.ball.Y()))
 	}
 
 	if g.ball.Rect().HasIntersection(opponent.Rect()) {
 		g.ball.SetXVelocity(-ballVelocity)
-		spin := determineSpin(opponent.Y(), g.ball.Y())
-		g.ball.SetYVelocity(spin)
+		g.ball.SetYVelocity(determineSpin(opponent.Y(), g.ball.Y()))
 	}
 }
 
-// handleWalls handles collision of the paddles and ball with window edges.
+// handleWalls handles collision of the paddles and ball with window edges. On
+// contact with left or right walls, modifies score and signals for pause time.
 func (g *game) handleWalls() {
 	// Prevent the ball from leaving the game window.
 	if g.ball.Y() <= 0 || g.ball.Y() >= int32(windowHeight)-ballHeight {
 		g.ball.SetYVelocity(g.ball.GetYVelocity() * -1)
-	}
-	if g.ball.X() >= int32(windowWidth)-ballWidth {
-		g.score++
-		g.pause = true
-	}
-	if g.ball.X() <= ballWidth {
-		g.score--
-		g.pause = true
 	}
 
 	// Prevent paddles from leaving the game window.
@@ -63,5 +51,15 @@ func (g *game) handleWalls() {
 		if p.Y() >= int32(windowHeight)-paddleHeight && p.GetYVelocity() > 0 {
 			p.SetYVelocity(0)
 		}
+	}
+
+	// Detect scores by the player or the opponent.
+	if g.ball.X() >= int32(windowWidth)-ballWidth {
+		g.score++
+		g.pause = true
+	}
+	if g.ball.X() <= ballWidth {
+		g.score--
+		g.pause = true
 	}
 }

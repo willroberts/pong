@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/veandco/go-sdl2/sdl"
-	ttf "github.com/veandco/go-sdl2/sdl_ttf"
+	"github.com/veandco/go-sdl2/ttf"
 )
 
 // GameEngine stores our global variables and shared components.

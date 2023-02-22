@@ -2,6 +2,7 @@ package pong
 
 import (
 	"errors"
+	"log"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -16,12 +17,13 @@ const (
 // they are released, stop movement. Also processes the quit event when the
 // user clicks the window's close button.
 func (g *GameEngine) processInput() error {
-	player := g.paddles[0]
+	//player := g.paddles[0]
 
 	for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 		switch t := event.(type) {
 		case *sdl.QuitEvent:
 			return errors.New("quitting")
+			/*
 		case *sdl.KeyDownEvent:
 			if t.Keysym.Sym != arrowUp && t.Keysym.Sym != arrowDown {
 				continue
@@ -42,6 +44,9 @@ func (g *GameEngine) processInput() error {
 			if t.Keysym.Sym == arrowDown {
 				player.SetYVelocity(0)
 			}
+			*/
+		default:
+			log.Println("type:", t)
 		}
 	}
 

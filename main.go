@@ -24,7 +24,7 @@ func init() {
 func main() {
 	// Create the game window and drawable surface.
 	window, err := sdl.CreateWindow(windowTitle, sdl.WINDOWPOS_UNDEFINED,
-		sdl.WINDOWPOS_UNDEFINED, windowWidth, windowHeight, sdl.WINDOW_SHOWN)
+		sdl.WINDOWPOS_UNDEFINED, int32(windowWidth), int32(windowHeight), sdl.WINDOW_SHOWN)
 	if err != nil {
 		log.Fatal("failed to initialize window: ", err)
 	}
